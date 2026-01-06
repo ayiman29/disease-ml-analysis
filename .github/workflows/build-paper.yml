@@ -19,8 +19,8 @@ jobs:
           root_file: main.tex
           working_directory: paper
 
-      - name: Commit PDF
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
         with:
-          commit_message: "Auto-build paper.pdf"
-          file_pattern: paper/paper.pdf
+          name: paper-pdf
+          path: paper/paper.pdf
