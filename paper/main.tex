@@ -1,0 +1,166 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[style=ieee]{biblatex} 
+\bibliography{references.bib} 
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{url}
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\title{Machine Learning Models for Disease Type Classification: CSE422 Lab Project}
+
+\author{Muntaha Fatema Tahiat, 23341038, 
+Raiyan Zakir Ayiman, 23301211\\
+\small{CSE 422L, Section 11, Group 1}
+}
+
+\maketitle
+
+
+\begin{abstract}
+This lab project focuses on classifying three types of patients using a dataset with nine features, both numerical and categorical. Various machine learning algorithms were implemented, including K-Nearest Neighbors (KNN), Random Forest, Neural Networks, and K-Means clustering. Data preprocessing involved handling missing values, encoding categorical variables, and applying Min-Max scaling. Model performance was evaluated using accuracy, precision, recall, F1-score, confusion matrices, and ROC curves. The results indicate that KNN achieved the highest F1-score and sensitivity, making it the most suitable model for disease prediction where minimizing false negatives is crucial.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Disease Type, Machine Learning, KNN, Random Forest, Classification, Sensitivity, F1-score
+\end{IEEEkeywords}
+
+\section{Introduction}
+We have a dataset about three types of patients, which falls under the classification problem in Machine Learning. We will be implementing different types of algorithms, and evaluating the algorithms. 
+
+\section{Dataset Description}
+The dataset contains 1800 data points with nine features:
+
+\begin{itemize}
+    \item Numerical: Age, BMI, Blood Pressure, Cholesterol, Heart Rate
+    \item Categorical: Smoking Habit, Physical Activity Level, Family History, Disease Type
+\end{itemize}
+
+Data URL: \url{https://drive.google.com/uc?export=download&id=1inGFudTwX6uZTGhcyVhCIZykKmqJMLuS}
+
+\subsection{Numerical Feature Overview}
+\begin{table}[H]
+\centering
+\begin{tabular}{lrrrrrrrr}
+\hline
+Feature & Count & Mean & Std & Min & Max \\
+\hline
+Age & 1800 & 49.14 & 17.40 & 20 & 79 \\
+BMI & 1710 & 25.11 & 4.92 & 7.46 & 41.77 \\
+Blood Pressure & 1800 & 118.67 & 22.89 & 80 & 159 \\
+Cholesterol & 1710 & 223.37 & 43.66 & 150 & 299 \\
+Heart Rate & 1800 & 89.66 & 17.07 & 60 & 119 \\
+\hline
+\end{tabular}
+\caption{Numerical feature summary of the dataset.}
+\label{table:numerical}
+\end{table}
+
+\subsection{Categorical Feature Overview}
+\begin{table}[H]
+\centering
+\begin{tabular}{lrrrr}
+\hline
+Feature & Count & Unique & Top & Freq \\
+\hline
+Smoking Habit & 1710 & 2 & Smoker & 861 \\
+Physical Activity Level & 1800 & 3 & Low & 636 \\
+Family History & 1800 & 2 & No & 910 \\
+Disease Type & 1800 & 3 & Type B & 634 \\
+\hline
+\end{tabular}
+\caption{Categorical feature summary of the dataset.}
+\label{table:categorical}
+\end{table}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{histogram.png}
+\caption{Histogram of numerical features from the disease type dataset.}
+\label{fig:histogram}
+\end{figure}
+
+\section{Data Preprocessing}
+Three features contained missing values: BMI, Cholesterol, and Smoking Habit.
+\begin{itemize}
+    \item BMI and Cholesterol were replaced with the mean.
+    \item Smoking Habit was replaced with the mode.
+\end{itemize}
+Categorical variables were encoded as follows:
+\begin{itemize}
+    \item Smoking Habit and Family History were label-encoded, while Disease Type was encoded into three class labels.
+    \item Physical Activity Level: mapped to 0 (Low), 1 (Moderate), 2 (High)
+\end{itemize}
+As we can see in the correlation table attached below, no features are overly correlated with each other. As a result, it was not necessary to drop any features. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{correlation.png}  
+\caption{Correlation matrix of numerical and categorical features in the disease type dataset.}
+\label{fig:correlation}
+\end{figure}
+
+Scaling using Min-Max normalization was applied to all numerical features to ensure comparable ranges. Feature correlation analysis indicated no highly correlated features, so all features were retained.
+
+\section{Model Training}
+We trained four models:
+
+\begin{enumerate}
+    \item K-Nearest Neighbors (KNN)
+    \item Random Forest
+    \item Neural Network
+    \item K-Means clustering (unsupervised)
+\end{enumerate}
+
+KNN was chosen because it is non-parametric and captures local patterns effectively. Random Forest was selected because it does not assume linearity and can model complex feature interactions. Neural Networks were also tested, but due to the small dataset and weak correlations, their performance was limited. K-Means was used as an unsupervised benchmark.
+
+\section{Model Evaluation}
+
+\subsection{Performance Metrics}
+\begin{table}[H]
+\centering
+\begin{tabular}{lcccc}
+\hline
+Model & Accuracy & Precision & Recall & F1-Score \\
+\hline
+KNN & 0.37 & 0.36 & 0.37 & 0.36 \\
+Random Forest & 0.35 & 0.35 & 0.35 & 0.35 \\
+Neural Network & 0.31 & 0.31 & 0.30 & 0.29 \\
+K-Means & 0.33 & 0.34 & 0.34 & 0.33 \\
+\hline
+\end{tabular}
+\caption{Comparison of model performance metrics.}
+\label{table:performance}
+\end{table}
+
+\subsection{Bar Chart of Accuracy and F1-Score}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{score.png}
+\caption{Bar chart comparing Accuracy and F1-Score for all models.}
+\label{fig:score}
+\end{figure}
+
+\subsection{Confusion Matrix}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{confusion.png}
+\caption{Confusion matrix for the evaluated models.}
+\label{fig:confusion}
+\end{figure}
+
+\subsection{ROC Curve Comparison}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{roc.png}
+\caption{ROC curve comparison for KNN, Random Forest, and Neural Network models.}
+\label{fig:roc}
+\end{figure}
+
+\section{Conclusion}
+Based on the model evaluation, we can see that KNN has the highest f1 value, which means it gives an overall better precision and sensitivity compared to the rest of the model. Also, it has the highest AUC for the ROC curve, meaning it’s the best model in this scenario. For a disease prediction, we should emphasize on the sensitivity as we should minimize the number of false negatives which would result in patients going undiagnosed. KNN has the most sensitivity. Therefore, we can conclude by saying, KNN is the best model based on the model evaluations. 
+
+
+\printbibliography
+
+\end{document}
